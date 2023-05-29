@@ -1,35 +1,44 @@
+class food:
+    def __init__(self, h, w):
+        self.h = h
+        self.w = w
+        
 n, k = map(int, input().split())
-h = [0]
-w = [0]
-for i in range(n):
-    a, b = map(int, input().split())
-    h.append(a)
-    w.append(b)
+li = [] # class:food
+s = 0 # 总巧克力面积
 
-def binary():
-    l, r = -1, 100100
-    while l + 1 != r:
-        mid = (l + r) // 2
-        if not judge(mid): # 巧克力切大了
-            r = mid
-        else: l = mid # 巧克力切小了
-    return mid
-            
-def judge(mmax):
-    final = 0 # 已经分到巧克力的小朋友
-    for i in range(1, n + 1): # 遍历小明所有的巧克力
-        if h[i] * w[i] < mmax * mmax: # 面积过小的巧克力不能被切分
-            continue
-        if h[i] >= mmax and w[i] >= mmax: # 长宽至少够切一个的巧克力
-            t_h = h[i] // mmax
-            t_w = w[i] // mmax
-            final += t_h * t_w
-    if final < k: return False # 不够分
-    else: return True # 够分
+for _ in range(n):
+    h, w = map(int, input().split())
+    s += h * w
+    f = food(h, w)
+    li.append(f)
 
-ans = binary()
-for i in range(ans + 3, ans - 3, -1):
-    if judge(i):
-        print(i)
-        break
-    
+l = int((s/k)**0.5) # 初始化边长
+tmp = k # 还没有分到巧克力的人数
+flag_all = False
+
+while True:
+    for i in li: # 读取每个巧克力
+        flag = False
+        lmt_i = 0
+        lmt_j = 0
+        for d in range(1, 100001):
+            if flag: break
+            for g in range(1, 100001):
+                # 取最多的巧克力
+                if i.h >= g * l:
+                    lmt_i = g
+                if i.w >= d * l:
+                    lmt_j = d
+                # 满足条件，终止循环
+                if i.h < g * l and i.w < d * l:
+                    flag = True
+                    break
+        tmp -= lmt_i * lmt_j
+        if tmp <= 0: # 小朋友全分到了巧克力
+            flag_all = True
+            break
+    if flag_all: break # 结束总循环
+    l -= 1
+
+print(l)  
