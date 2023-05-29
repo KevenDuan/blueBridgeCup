@@ -1,21 +1,23 @@
 n = int(input())
-a = list(map(int, input().split()))
-b = list(map(int, input().split()))
-c = list(map(int, input().split()))
+A = list(map(int, list(input().split())))
+B = list(map(int, list(input().split())))
+C = list(map(int, list(input().split())))
 
-# 先将数组排序
-a.sort()
-b.sort()
-c.sort()
+def check():
+    ctime = 0
+    for i in range(n):
+        a = A[i]
+        b = 0
+        for j in range(n):
+            b = B[j]
+            c = 0
+            if b <= a: # B数组中不大于A[i]的
+                continue
+            for k in range(n):
+                c = C[k]
+                if c > b:
+                    ctime += 1
+    return ctime
 
-# 对于每个 b[j]，找出满足 a[i] < b[j] 和 b[j] < c[k] 的 i 和 k 的位置
-i, k = 0, 0
-count = 0
-for j in range(n):
-    while i < n and a[i] < b[j]:
-        i += 1
-    while k < n and c[k] <= b[j]:
-        k += 1
-    count += i * (n-k)
-
-print(count)
+print(check())           
+        
