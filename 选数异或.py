@@ -1,15 +1,16 @@
+# begain:18:00 end:18:25
 n, m, x = map(int, input().split())
-a = [0] + list(input().split())
-op = [0] * (n+10)
-mp = {}
-op[n+1] = 1<<30
-for i in range(n, 0, -1):
-    a[i] = int(a[i])
-    mp[a[i]] = i
-    op[i] = op[i+1]
-    y = x^a[i]
-    if mp.get(y): op[i] = min(op[i], mp[y])
+li = [0] + list(map(int, input().split()))
+temp = []
 for i in range(m):
+    flag = False
     l, r = map(int, input().split())
-    if op[l] <= r: print('yes')
-    else: print('no')
+    for j in range(l, r+1):
+        for k in range(j+1, r+1):
+            if li[j] ^ li[k] == x:
+                flag = True
+    if flag: temp.append('yes')
+    else: temp.append('no')
+            
+for i in temp:
+    print(i)
