@@ -1,21 +1,29 @@
-from collections import deque
-q = deque([(0, 0, '')])
-dir = [(1, 0, 'D'), (0, -1, 'L'), (0, 1, 'R'), (-1, 0, 'U')]
-mp = []
-for i in range(30):
-    mp.append(list(input()))
-mp[0][0] = '1'
-# bfs
-while q:
-    x, y, p = q.popleft()
-    # print(x, y, p)
-    if x == 29 and y == 49:
-        print(p)
-        break
-    for i in dir:
-        nx = x + i[0]
-        ny = y + i[1]
-        np = p + i[2]
-        if nx >= 0 and ny >= 0 and nx <= 29 and ny <= 49 and mp[nx][ny] == '0':
-            mp[nx][ny] = '1'
-            q.append((nx, ny, np))
+def dfs(x, y, a, i):
+    if x < 0 or x > len(data) - 1 or y < 0 or y > len(data[0]) - 1: return
+    elif data[x][y] == '1': return
+    # 上锁
+    data[x][y] = '1'
+    a += i
+    if x == len(data) - 1 and y == len(data[0]) - 1:
+        print(a)
+        print()
+    for i in dire:
+        if i == 'D':
+            dfs(x+1, y, a, i)
+        if i == 'L':
+            dfs(x, y-1, a, i)
+        if i == 'R':
+            dfs(x, y+1, a, i)
+        if i == 'U':
+            dfs(x-1, y, a, i)
+    # 解锁
+    data[x][y] = '0'
+
+data = [[''] * 6 for i in range(4)]
+for i in range(4):
+    data[i] = list(input())
+
+ans = ''
+dire = ['D', 'L', 'R', 'U']
+dfs(0, 0, ans, '')
+
